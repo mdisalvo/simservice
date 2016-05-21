@@ -1,0 +1,7 @@
+.idea/
+.gradle/
+build/*
+sim-service.iml
+sim-service.ipr
+sim-service.iws
+.DS_Store
