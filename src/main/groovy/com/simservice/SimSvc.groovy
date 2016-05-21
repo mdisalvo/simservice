@@ -1,5 +1,6 @@
 package com.simservice
 
+import org.omg.CORBA.Request
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -19,4 +20,7 @@ class SimSvc {
         ResponseEntity.ok("Testing the service.")
     }
 
+    def int testMethod(a, b) {
+        a + b
+    }
 }
