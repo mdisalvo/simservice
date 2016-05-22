@@ -4,10 +4,6 @@ import com.google.common.base.Charsets
 import com.google.common.hash.Hasher
 import com.google.common.hash.Hashing
 
-/**
- * @author Michael Di Salvo
- * mdisalvo@kcura.com
- */
 class TokenizerChain {
 
     private abstract class Tokenizer {
@@ -25,13 +21,15 @@ class TokenizerChain {
         private Character last = ' '
         @Override def handle(f) {
             char n = f.charAt(0)
-            if (last.charValue() != null) { process(Character.getNumericValue(last.charValue())) }
+            if (last.charValue() != null) {
+                process(Character.getNumericValue(last.charValue()) + Character.getNumericValue(n))
+            }
             last = n
         }
     }
 
     private class Tokenizer3 extends Tokenizer {
-        @Override def handle(f) { process(Hashing.md5().hashString(f, Charsets.UTF_8).asInt()) }
+        @Override def handle(f) { process(Hashing.md5().hashString((String)f, Charsets.UTF_8).asInt()) }
     }
 
     private class Tokenizer4 extends Tokenizer {
@@ -39,9 +37,9 @@ class TokenizerChain {
     }
 
     class TokenizerResults {
-        def sigs
-        def md5
-        def tokenCount
+        List<Map<Integer, Integer>> sigs
+        String md5
+        int tokenCount
         TokenizerResults(sigs, md5, tokenCount) {
             this.sigs = sigs
             this.md5 = md5

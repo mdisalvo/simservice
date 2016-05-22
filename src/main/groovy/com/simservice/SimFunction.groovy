@@ -2,10 +2,6 @@ package com.simservice
 
 import com.simservice.TokenizerChain.TokenizerResults
 
-/**
- * @author Michael Di Salvo
- * mdisalvo@kcura.com
- */
 class SimFunction {
 
     private static def intersect(Map<Integer, Integer> v1, Map<Integer, Integer> v2) {
@@ -42,21 +38,25 @@ class SimFunction {
         numerator
     }
 
-    static def getSimilarity(TokenizerResults itemA, TokenizerResults itemB, int denom) {
-        if (itemA.md5 == itemB.md5) {
-            return 1F
-        }
+    static def getSimilarity(TokenizerResults itemA, TokenizerResults itemB) {
+        // Based on Jaccard Indexing
+        int denom = itemA.tokenCount > itemB.tokenCount ? itemA.tokenCount : itemB.tokenCount
+
+        // If the md5's are the same, then well, duh...
+        if (itemA.md5 == itemB.md5) { return 1F }
 
         List<Map<Integer, Integer>> a = itemA.sigs
         List<Map<Integer, Integer>> b = itemB.sigs
-        if (a.isEmpty() || b.isEmpty()) {
-            return 0F
-        }
+        if (a.isEmpty() || b.isEmpty()) { return 0F }
+
+        // Iterate through the signatures for both items, and find the smallest numerator as determined by intersect()
         int smallestSeen = Integer.MAX_VALUE
         a.eachWithIndex { s, i ->
             int num = intersect(s, b.get(i))
             smallestSeen = Math.min(smallestSeen, num)
         }
+        
+        // Perform the final calculation and return the result
         (smallestSeen/denom)
     }
 

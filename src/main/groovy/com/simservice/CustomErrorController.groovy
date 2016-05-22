@@ -12,10 +12,6 @@ import org.springframework.web.context.request.ServletRequestAttributes
 
 import javax.servlet.http.HttpServletRequest
 
-/**
- * @author Michael Di Salvo
- * mdisalvo@kcura.com
- */
 @RestController
 class CustomErrorController implements ErrorController {
 
