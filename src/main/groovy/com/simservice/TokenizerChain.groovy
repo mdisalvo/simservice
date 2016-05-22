@@ -6,6 +6,8 @@ import com.google.common.hash.Hashing
 
 class TokenizerChain {
 
+    static final int NUM_TOKENIZERS = 4
+
     private abstract class Tokenizer {
         def vals = [:]
         abstract def handle(f)

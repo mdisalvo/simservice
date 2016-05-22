@@ -4,6 +4,8 @@ import com.simservice.TokenizerChain.TokenizerResults
 
 class SimFunction {
 
+    private static final int NUM_TOKENIZERS = TokenizerChain.NUM_TOKENIZERS
+
     private static def intersect(Map<Integer, Integer> v1, Map<Integer, Integer> v2) {
         List<Integer> v1Features = v1.keySet().asList()
         List<Integer> v2Features = v2.keySet().asList()
@@ -49,15 +51,15 @@ class SimFunction {
         List<Map<Integer, Integer>> b = itemB.sigs
         if (a.isEmpty() || b.isEmpty()) { return 0F }
 
-        // Iterate through the signatures for both items, and find the smallest numerator as determined by intersect()
-        int smallestSeen = Integer.MAX_VALUE
+        // Iterate through the signatures for both items, and find the largest numerator as determined by intersect()
+        int largestSeen = Integer.MIN_VALUE
         a.eachWithIndex { s, i ->
             int num = intersect(s, b.get(i))
-            smallestSeen = Math.min(smallestSeen, num)
+            largestSeen = Math.max(largestSeen, num)
         }
-        
+
         // Perform the final calculation and return the result
-        (smallestSeen/denom)
+        (largestSeen/denom)
     }
 
 }

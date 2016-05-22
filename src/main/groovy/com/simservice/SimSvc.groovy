@@ -15,12 +15,53 @@ import javax.xml.bind.annotation.XmlRootElement
 import static com.google.common.base.Preconditions.checkNotNull
 import static org.springframework.web.bind.annotation.RequestMethod.POST
 
+/**
+ * <pre>
+ * The class responsible for coordinating the data from the REST request into the {@link SimFunction}, and returning
+ * the result.  It also contains the class definitions for the request and response entities.
+ * </pre>
+ *
+ * <pre>
+ *  SimRequestEntity:
+ *      String textItemA
+ *      String textItemB
+ * </pre>
+ *
+ * <pre>
+ *  SimResponseEntity:
+ *      String message
+ *      double result
+ *      String md5TextItemA
+ *      int tokenCountTextItemA
+ *      String md5TextItemB
+ *      int tokenCountTextItemB
+ * </pre>
+ *
+ * <pre>
+ *  Sample Request:
+ *      POST /docsim ->
+ *      {
+ *          "textItemA": "The quick brown fox jumped over the lazy dog",
+ *          "textItemB": "The quick brown fox jumped over the lazy dog yo"
+ *      }
+ *
+ *  Sample Response:
+ *      {
+ *          "message": Item with md5 08a008a01d498c404.... is 0.9% similar to item with md5 1086e0074b3fa4f14....",
+ *          "result": 0.9
+ *          "md5TextItemA": "08a008a01d498c404b0c30852b39d3b8",
+ *          "tokenCountTextItemA": 9,
+ *          "md5TextItemB": "1086e0074b3fa4f14e214cd99b5b4ca9",
+ *          "tokenCountTextItemB": 10
+ *      }
+ * </pre>
+ */
 @RestController
 @RequestMapping("/docsim")
 class SimSvc {
 
     @RequestMapping(value = "", method = POST, consumes = "application/json", produces = "application/json")
-    ResponseEntity testSvc(@RequestBody SimRequestEntity simRequestEntity) {
+    ResponseEntity calculateSimilarity(@RequestBody SimRequestEntity simRequestEntity) {
         checkNotNull(simRequestEntity)
         TokenizerResults itemA = new TokenizerChain().compute(simRequestEntity.textItemA)
         TokenizerResults itemB = new TokenizerChain().compute(simRequestEntity.textItemB)
@@ -29,8 +70,8 @@ class SimSvc {
         ResponseEntity.ok(
                 new SimResponseEntity(
                     message, sim,
-                    itemA.md5, itemA.tokenCount, itemA.sigs,
-                    itemB.md5, itemB.tokenCount, itemB.sigs
+                    itemA.md5, itemA.tokenCount,
+                    itemB.md5, itemB.tokenCount
                 )
         )
     }
@@ -62,34 +103,26 @@ class SimSvc {
         private double result
         private String md5TextItemA
         private int tokenCountTextItemA
-        private List<Map<Integer, Integer>> sigsItemA
         private String md5TextItemB
         private int tokenCountTextItemB
-        private List<Map<Integer, Integer>> sigsItemB
         SimResponseEntity(String message,
                           double result,
                           String md5TextItemA,
                           int tokenCountTextItemA,
-                          List<Map<Integer, Integer>> sigsItemA,
                           String md5TextItemB,
-                          int tokenCountTextItemB,
-                          List<Map<Integer, Integer>> sigsItemB) {
+                          int tokenCountTextItemB) {
             this.message = message
             this.result = result
             this.md5TextItemA = md5TextItemA
             this.tokenCountTextItemA = tokenCountTextItemA
-            this.sigsItemA = sigsItemA
             this.md5TextItemB = md5TextItemB
             this.tokenCountTextItemB = tokenCountTextItemB
-            this.sigsItemB = sigsItemB
         }
         String getMessage() { return message }
         double getResult() { return result }
         String getMd5TextItemA() { return md5TextItemA }
         int getTokenCountTextItemA() { return tokenCountTextItemA }
-        List<Map<Integer, Integer>> getSigsItemA() { return sigsItemA }
         String getMd5TextItemB() { return md5TextItemB }
         int getTokenCountTextItemB() { return tokenCountTextItemB }
-        List<Map<Integer, Integer>> getSigsItemB() { return sigsItemB }
     }
 }
