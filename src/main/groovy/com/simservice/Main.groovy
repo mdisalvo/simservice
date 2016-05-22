@@ -9,17 +9,16 @@ import org.springframework.stereotype.Component
 
 /**
  * @author Michael Di Salvo
- * michael.vincent.disalvo@gmail.com
+ * mdisalvo@kcura.com
  */
 @Component
 @ComponentScan
 @EnableAutoConfiguration
 @PropertySource("classpath:application.properties")
-class SimServiceMain {
+class Main {
     static main(args) {
         new SpringApplicationBuilder()
-                .sources(SimServiceMain.class)
-                .bannerMode(Banner.Mode.OFF)
+                .sources(Main.class)
                 .run()
     }
 }

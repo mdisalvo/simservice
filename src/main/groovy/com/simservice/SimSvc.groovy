@@ -1,15 +1,14 @@
 package com.simservice
 
-import org.omg.CORBA.Request
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.GET
 
 /**
  * @author Michael Di Salvo
- * michael.vincent.disalvo@gmail.com
+ * mdisalvo@kcura.com
  */
 @RestController
 @RequestMapping("/docsim")
@@ -20,7 +19,4 @@ class SimSvc {
         ResponseEntity.ok("Testing the service.")
     }
 
-    def int testMethod(a, b) {
-        a + b
-    }
 }
