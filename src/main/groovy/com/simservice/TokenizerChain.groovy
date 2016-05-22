@@ -18,7 +18,7 @@ class TokenizerChain {
     }
 
     private class Tokenizer1 extends Tokenizer {
-        @Override def handle(f) { process(Character.getNumericValue(f.charAt(0))) }
+        @Override def handle(f) { process(Character.getNumericValue((char)f.charAt(0))) }
     }
 
     private class Tokenizer2 extends Tokenizer {
@@ -38,6 +38,17 @@ class TokenizerChain {
         @Override def handle(f) { process(f.length()) }
     }
 
+    class TokenizerResults {
+        def sigs
+        def md5
+        def tokenCount
+        TokenizerResults(sigs, md5, tokenCount) {
+            this.sigs = sigs
+            this.md5 = md5
+            this.tokenCount = tokenCount
+        }
+    }
+
     private tokenizers = []
 
     private Hasher md5
@@ -51,16 +62,18 @@ class TokenizerChain {
     }
 
     def compute(String text) {
-        def results = []
+        def sigs = []
+        def tokenCount = 0
         text.toLowerCase().tokenize().each { String token ->
+            tokenCount++
             tokenizers.each { Tokenizer tokenizer ->
                 tokenizer.handle(token)
             }
         }
         tokenizers.each { Tokenizer tokenizer ->
-            results << tokenizer.results()
+            sigs << tokenizer.results()
         }
-        results << [md5: md5.putString(text, Charsets.UTF_8).hash()]
+        new TokenizerResults(sigs, md5.putString(text, Charsets.UTF_8).hash().toString(), tokenCount)
     }
 
 }
