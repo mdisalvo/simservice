@@ -6,6 +6,8 @@ A Spring-booted service hosted by Heroku that quickly allows you to determine ho
 
 Usage
 -----
+Interactive Documentation available at: ```simservice.herokuapp.com/swagger-ui.html```
+
 A single REST endpoint is exposed at ```/docsim``` which accepts a JSON payload that consists of the following:
 
 |      Field    |    Type    |        Description          |
@@ -44,5 +46,7 @@ POST simservice.herokuapp.com/docsim
 ```
 
 Want to build and start locally?  Clone the repository, unpack it, and execute the following within the project dir:
+
 ```./gradlew bootRun```
+
 This will start a local server on port 8080 to test against.

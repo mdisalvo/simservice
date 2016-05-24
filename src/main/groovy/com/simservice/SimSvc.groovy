@@ -3,6 +3,12 @@ package com.simservice
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.simservice.TokenizerChain.TokenizerResults
+import io.swagger.annotations.ApiImplicitParam
+import io.swagger.annotations.ApiImplicitParams
+import io.swagger.annotations.ApiModelProperty
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiResponse
+import io.swagger.annotations.ApiResponses
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -60,7 +66,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST
 @RequestMapping("/docsim")
 class SimSvc {
 
+    @ApiOperation(value = "calculateSimilarity", nickname = "calculateSimilarity")
     @RequestMapping(value = "", method = POST, consumes = "application/json", produces = "application/json")
+    @ApiImplicitParam(name = "simRequestEntity", value = "Text Items", required = true, dataType = "SimRequestEntity")
+    @ApiResponses(value = [
+        @ApiResponse(code = 200, message = "Success", response = SimResponseEntity.class),
+        @ApiResponse(code = 400, message = "Bad Request"),
+        @ApiResponse(code = 500, message = "Internal Server Error")
+    ])
     ResponseEntity calculateSimilarity(@RequestBody SimRequestEntity simRequestEntity) {
         checkNotNull(simRequestEntity)
         TokenizerResults itemA = new TokenizerChain().compute(simRequestEntity.textItemA)
@@ -92,7 +105,11 @@ class SimSvc {
             this.textItemA = textItemA
             this.textItemB = textItemB
         }
+        @JsonProperty(required = true)
+        @ApiModelProperty(notes = "The text for item A", required = true)
         String getTextItemA() { return textItemA }
+        @JsonProperty(required = true)
+        @ApiModelProperty(notes = "The text for item B", required = true)
         String getTextItemB() { return textItemB }
     }
 
