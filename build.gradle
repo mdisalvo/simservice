@@ -1,5 +1,8 @@
 group 'com.simservice'
 version '1.0-SNAPSHOT'
+def name = 'simservice'
+
+def appName = name + '-' + version + '.jar'
 
 buildscript {
     repositories {
@@ -15,12 +18,12 @@ apply plugin: 'spring-boot'
 apply plugin: 'groovy'
 apply plugin: 'java'
 
+sourceCompatibility=1.8
+targetCompatibility=1.8
+
 repositories {
     mavenCentral()
 }
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 dependencies {
     // tag::jetty[]
@@ -30,7 +33,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jetty")
     // end::jetty[]
     // tag::actuator[]
-//    compile("org.springframework.boot:spring-boot-starter-actuator")
+    // compile("org.springframework.boot:spring-boot-starter-actuator")
     // end::actuator[]
     compile 'org.codehaus.groovy:groovy-all'
     // guava
@@ -55,11 +58,11 @@ task stage(type: Copy, dependsOn: [clean, build]) {
     from jar.archivePath
     into project.rootDir
     rename {
-        'app.jar'
+        appName
     }
 }
 stage {}.mustRunAfter(clean)
 
 clean << {
-    project.file('app.jar').delete()
+    project.file(appName).delete()
 }
