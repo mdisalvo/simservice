@@ -30,7 +30,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jetty")
     // end::jetty[]
     // tag::actuator[]
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+//    compile("org.springframework.boot:spring-boot-starter-actuator")
     // end::actuator[]
     compile 'org.codehaus.groovy:groovy-all'
     // guava
