@@ -1,30 +1,29 @@
-[![Build Status](https://travis-ci.org/mdisalvo/simservice.svg)](https://travis-ci.org/mdisalvo/simservice)
+### simservice: [![Build Status](https://travis-ci.com/mdisalvo/simservice.svg)](https://travis-ci.com/mdisalvo/simservice)
 
-What Is This?
------
+#### What Is This?
 A Spring-booted service hosted by Heroku that quickly allows you to determine how similar one item of text is to another.  The text for each item is processed through a chain of tokenizers that vectorize the text into integer maps, which are then used to a compute a similarity score based on Jaccard multi-set indexing.
 
-Usage
------
-Interactive Documentation available at: ```simservice.herokuapp.com/swagger-ui.html```
+#### Try It Out:
+- Base URL: simservice.herokuapp.com
+- [API Documentation](https://simservice.herokuapp.com/swagger-ui.html) 
 
 A single REST endpoint is exposed at ```/docsim``` which accepts a JSON payload that consists of the following:
 
-|      Field    |    Type    |        Description          |
-|---------------|------------|-----------------------------|
-|```textItemA```|```String```|The text to process for itemA|
-|```textItemB```|```String```|The text to process for itemB|
+| Field           | Type         | Description                   |
+| --------------- | ------------ | ----------------------------- |
+| ```textItemA``` | ```String``` | The text to process for itemA |
+| ```textItemB``` | ```String``` | The text to process for itemB |
 
 The response entity:
 
-|      Field              |    Type    |        Description                                             |
-|-------------------------|------------|----------------------------------------------------------------|
-|```message```            |```String```|The message describing the results                              |
-|```result```             |```double```|The similarity score represented as a double between 0.0 and 1.0|
-|```md5TextItemA```       |```String```|The calculated md5 of the text from itemA                       |
-|```tokenCountTextItemA```|```int```   |The token count of the text from itemA                          |
-|```md5TextItemB```       |```String```|The calculated md5 of the text from itemB                       |
-|```tokenCountTextItemB```|```int```   |The token count of the text from itemB                          |
+| Field                     | Type         | Description                                                      |
+| ------------------------- | ------------ | ---------------------------------------------------------------- |
+| ```message```             | ```String``` | The message describing the results                               |
+| ```result```              | ```double``` | The similarity score represented as a double between 0.0 and 1.0 |
+| ```md5TextItemA```        | ```String``` | The calculated md5 of the text from itemA                        |
+| ```tokenCountTextItemA``` | ```int```    | The token count of the text from itemA                           |
+| ```md5TextItemB```        | ```String``` | The calculated md5 of the text from itemB                        |
+| ```tokenCountTextItemB``` | ```int```    | The token count of the text from itemB                           |
 
 An example call:
 ```javascript
@@ -45,6 +44,7 @@ POST simservice.herokuapp.com/docsim
 }
 ```
 
+##### Test It Out:
 Want to build and start locally?  Clone the repository, unpack it, and execute the following within the project dir:
 
 ```./gradlew bootRun```
